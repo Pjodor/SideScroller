@@ -60,13 +60,13 @@ function scene:createScene( event )
 	arrow.collided = false
 	
 	explosionSpriteSheet = sprite.newSpriteSheet("explosion.png", 24, 23)
-    explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
-    sprite.add(explosionSprites, "explosions", 1, 8, 2000, 1)
-    explosion = sprite.newSprite(explosionSprites)
-    explosion.x = 100
-    explosion.y = 100
-    explosion:prepare("explosions")
-    explosion.isVisible = false
+    	explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
+    	sprite.add(explosionSprites, "explosions", 1, 8, 2000, 1)
+    	explosion = sprite.newSprite(explosionSprites)
+    	explosion.x = 100
+   	explosion.y = 100
+    	explosion:prepare("explosions")
+    	explosion.isVisible = false
 	screenGroup:insert(explosion)
 	
 	enemy1 = display.newImage( "enemy1.png" )
