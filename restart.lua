@@ -25,10 +25,10 @@ function scene:createScene( event )
 	if settings.score > settings.highscore then
 		settings.highscore = settings.score
 		
-		local newRecordTime = display.newText("New record!", display.contentWidth, display.contentHeight, native.systemFont, 25 )
+		local newRecordTime = display.newText("New record!", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 		newRecordTime:setReferencePoint( display.TopLeftReferencePoint )
-		newRecordTime.x = display.contentWidth * 0.05
-		newRecordTime.y = display.contentHeight * 0.82
+		newRecordTime.x = display.contentWidth * 0.5
+		newRecordTime.y = display.contentHeight * 0.65
 		newRecordTime:setTextColor( 255, 0, 0 )
 		screenGroup:insert( newRecordTime )
 	end
@@ -43,7 +43,7 @@ function scene:createScene( event )
 	local yourRecordTime = display.newText("Best score: " .. settings.highscore .. " points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourRecordTime.x = display.contentWidth * 0.05
-	yourRecordTime.y = display.contentHeight * 0.7
+	yourRecordTime.y = display.contentHeight * 0.65
 	yourRecordTime:setTextColor( 50, 150, 150 )
 	screenGroup:insert( yourRecordTime )
 	
@@ -54,12 +54,26 @@ function scene:createScene( event )
 	restartText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( restartText )
 	
-	local medelText = display.newText( "Average socre: " .. settings.medel, display.contentWidth, display.contentHeight, native.systemFont, 15 )
-	restartText:setReferencePoint( display.TopLeftReferencePoint )
-	restartText.x = display.contentWidth * 0.07
-	restartText.y = display.contentHeight * 0.25
-	restartText:setTextColor( 150, 150, 150 )
-	screenGroup:insert( restartText )
+	local medelText = display.newText( "Average total score: " .. settings.medel, display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	medelText:setReferencePoint( display.TopLeftReferencePoint )
+	medelText.x = display.contentWidth * 0.06
+	medelText.y = display.contentHeight * 0.75
+	medelText:setTextColor( 150, 150, 150 )
+	screenGroup:insert( medelText )
+	
+	local medelBonusText = display.newText( "Average bonus score: " .. settings.medelbonus, display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	medelBonusText:setReferencePoint( display.TopLeftReferencePoint )
+	medelBonusText.x = display.contentWidth * 0.06
+	medelBonusText.y = display.contentHeight * 0.8
+	medelBonusText:setTextColor( 150, 150, 150 )
+	screenGroup:insert( medelBonusText )
+	
+	local playedText = display.newText( "You have played " .. settings.runs .. " times since last reset", display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	playedText:setReferencePoint( display.TopLeftReferencePoint )
+	playedText.x = display.contentWidth * 0.06
+	playedText.y = display.contentHeight * 0.85
+	playedText:setTextColor( 150, 150, 150 )
+	screenGroup:insert( playedText )
 	
 	muteBtn = widget.newButton{
 		overFile = "Soundon.png",
@@ -84,7 +98,7 @@ function scene:createScene( event )
 	screenGroup:insert( muteBtn2 )	
 	
 	resetBtn = widget.newButton{
-		label = "Reset Score",
+		label = "Reset",
 		labelColor = { default= {255, 255, 255, 255 },
 						over = { 255, 255, 255, 150 } },
 		overFile = "resetbtn.png",
@@ -155,6 +169,10 @@ end
 
 function resetScore()
 	settings.highscore = 0
+	settings.medel = 0
+	settings.medelbonus = 0
+	settings.runs = 0
+	saveTable( settings, "settings.json" )
 end
 
 function start( event )

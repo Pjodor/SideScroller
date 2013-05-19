@@ -15,6 +15,23 @@ local scene = storyboard.newScene()
 function scene:createScene( event )
 	
 	settings = loadTable("settings.json")
+	
+	if settings.mute == nil then
+		settings.mute = false
+	end
+	
+	if settings.medel == nil then
+		settings.medel = 0
+	end
+	
+	if settings.runs == nil then
+		settings.runs = 0
+	end	
+	
+	if settings.medelbonus == nil then
+		settings.medelbonus = 0
+	end
+	
 	mute = settings.mute
 	bonusTime = 0
 	timeCheck = os.time()
@@ -60,13 +77,13 @@ function scene:createScene( event )
 	arrow.collided = false
 	
 	explosionSpriteSheet = sprite.newSpriteSheet("explosion.png", 24, 23)
-    	explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
-    	sprite.add(explosionSprites, "explosions", 1, 8, 2000, 1)
-    	explosion = sprite.newSprite(explosionSprites)
-    	explosion.x = 100
+	explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
+	sprite.add(explosionSprites, "explosions", 1, 8, 2000, 1)
+	explosion = sprite.newSprite(explosionSprites)
+	explosion.x = 100
    	explosion.y = 100
-    	explosion:prepare("explosions")
-    	explosion.isVisible = false
+	explosion:prepare("explosions")
+	explosion.isVisible = false
 	screenGroup:insert(explosion)
 	
 	enemy1 = display.newImage( "enemy1.png" )
@@ -400,25 +417,25 @@ function closeFly()
 		
 			if DisEnemy1 < 70 and DisEnemy2 < 70 then
 				bonusTime = bonusTime + 15
-				print("Close")
+				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
 				isDrifting = 30
 			
 			elseif DisEnemy1 < 70 and DisEnemy3 < 70 then
 				bonusTime = bonusTime + 15
-				print("Close")
+				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
 				isDrifting = 30
 				
 			elseif DisEnemy2 < 70 and DisEnemy3 < 70 then
 				bonusTime = bonusTime + 15
-				print("Close")
+				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
 				isDrifting = 30
 				
 			elseif DisEnemy1 < 45 or DisEnemy2 < 45 or DisEnemy3 < 45 then
 				bonusTime = bonusTime + 5
-				print("Close")
+				--print("Close")
 				makeDriftingText( "+5", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
 				isDrifting = 30
 			end
@@ -474,6 +491,10 @@ end
 
 function displayPointText()
 	pointText.text = (os.time() - startTime) + bonusTime
+end
+
+function round(theNos, precision)
+	return math.floor(theNos*math.pow(10,precision)+0.5) / math.pow(10,precision)
 end
 
 function scene:enterScene( event )
@@ -537,6 +558,13 @@ function scene:exitScene( event )
 	settings.mute = mute
 	settings.bonusTime = bonusTime
 	settings.pauseTime = pauseTime
+	
+	settings.runs = settings.runs + 1
+	settings.medel = (settings.medel * (settings.runs - 1) + settings.score)/settings.runs
+	settings.medelbonus = (settings.medelbonus * (settings.runs - 1) + settings.bonusTime)/settings.runs
+	
+	settings.medel = round( settings.medel, 2 )
+	settings.medelbonus = round( settings.medelbonus, 2 )
 	saveTable(settings, "settings.json")
 	
 end

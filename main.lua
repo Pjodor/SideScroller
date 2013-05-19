@@ -41,15 +41,10 @@ if loadTable("settings.json") == nil then
 	settings.score = 0
 	settings.highscore = 0
 	settings.mute = false
+	settings.medel = 0
+	settings.runs = 0
+	settings.medelbonus = 0
 	saveTable( settings, "settings.json")
-else
-	local settings2 = loadTable("settings.json")
-	
-	if settings2.mute == nil then
-		settings2.mute = false
-	end
-	
-	saveTable(settings2,"settings.json")
 end
 
 storyboard.gotoScene( "start" )
