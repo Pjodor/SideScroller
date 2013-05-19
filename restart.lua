@@ -54,6 +54,13 @@ function scene:createScene( event )
 	restartText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( restartText )
 	
+	local medelText = display.newText( "Average socre: " .. settings.medel, display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	restartText:setReferencePoint( display.TopLeftReferencePoint )
+	restartText.x = display.contentWidth * 0.07
+	restartText.y = display.contentHeight * 0.25
+	restartText:setTextColor( 150, 150, 150 )
+	screenGroup:insert( restartText )
+	
 	muteBtn = widget.newButton{
 		overFile = "Soundon.png",
 		defaultFile = "Soundon.png",
@@ -87,7 +94,6 @@ function scene:createScene( event )
 	resetBtn:setReferencePoint( display.TopRightReferencePoint )
 	resetBtn.x = display.contentWidth * 0.98
 	resetBtn.y = display.contentHeight * 0.85
-	resetBtn.isVisible = true
 	screenGroup:insert( resetBtn )	
 	
 	if mute == true then
