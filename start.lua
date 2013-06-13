@@ -33,7 +33,7 @@ function scene:createScene( event )
 	startText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( startText )
 	
-	local yourRecordTime = display.newText("Best score: " .. timeRecord .. " points", display.contentWidth, display.contentHeight, native.systemFont, 30 )
+	local yourRecordTime = display.newText("Your best score: " .. timeRecord .. " points", display.contentWidth, display.contentHeight, native.systemFont, 30 )
 	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourRecordTime.x = display.contentWidth * 0.05
 	yourRecordTime.y = display.contentHeight * 0.7
@@ -70,6 +70,13 @@ function scene:createScene( event )
 		muteBtn.isVisible = true
 		muteBtn2.isVisible = false
 	end
+	
+	local scoreToBeat = display.newText("Score To Beat: 184", display.contentWidth, display.contentHeight, native.systemFont, 25 )
+	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
+	scoreToBeat.x = display.contentWidth * 0.05
+	scoreToBeat.y = display.contentHeight * 0.84
+	scoreToBeat:setTextColor( 255, 0, 0 )
+	screenGroup:insert( scoreToBeat )
 	
 end
 

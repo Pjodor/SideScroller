@@ -28,7 +28,7 @@ function scene:createScene( event )
 		local newRecordTime = display.newText("New record!", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 		newRecordTime:setReferencePoint( display.TopLeftReferencePoint )
 		newRecordTime.x = display.contentWidth * 0.5
-		newRecordTime.y = display.contentHeight * 0.65
+		newRecordTime.y = display.contentHeight * 0.45
 		newRecordTime:setTextColor( 255, 0, 0 )
 		screenGroup:insert( newRecordTime )
 	end
@@ -36,42 +36,42 @@ function scene:createScene( event )
 	local yourTime = display.newText("Your total score: " .. settings.score .. " points (".. bonusTime .. " bonus points)", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourTime.x = display.contentWidth * 0.04
-	yourTime.y = display.contentHeight * 0.55
+	yourTime.y = display.contentHeight * 0.35
 	yourTime:setTextColor( 150, 150, 150 )
 	screenGroup:insert( yourTime )
 	
 	local yourRecordTime = display.newText("Best score: " .. settings.highscore .. " points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourRecordTime.x = display.contentWidth * 0.05
-	yourRecordTime.y = display.contentHeight * 0.65
+	yourRecordTime.y = display.contentHeight * 0.45
 	yourRecordTime:setTextColor( 50, 150, 150 )
 	screenGroup:insert( yourRecordTime )
 	
-	local restartText = display.newText( "Tap on the screen to restart", display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	local restartText = display.newText( "Tap on the screen to restart", display.contentWidth, display.contentHeight, native.systemFont, 16 )
 	restartText:setReferencePoint( display.TopLeftReferencePoint )
 	restartText.x = display.contentWidth * 0.06
-	restartText.y = display.contentHeight * 0.25
+	restartText.y = display.contentHeight * 0.23
 	restartText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( restartText )
 	
 	local medelText = display.newText( "Average total score: " .. settings.medel, display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	medelText:setReferencePoint( display.TopLeftReferencePoint )
 	medelText.x = display.contentWidth * 0.06
-	medelText.y = display.contentHeight * 0.75
+	medelText.y = display.contentHeight * 0.55
 	medelText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( medelText )
 	
 	local medelBonusText = display.newText( "Average bonus score: " .. settings.medelbonus, display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	medelBonusText:setReferencePoint( display.TopLeftReferencePoint )
 	medelBonusText.x = display.contentWidth * 0.06
-	medelBonusText.y = display.contentHeight * 0.8
+	medelBonusText.y = display.contentHeight * 0.6
 	medelBonusText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( medelBonusText )
 	
 	local playedText = display.newText( "You have played " .. settings.runs .. " times since last reset", display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	playedText:setReferencePoint( display.TopLeftReferencePoint )
 	playedText.x = display.contentWidth * 0.06
-	playedText.y = display.contentHeight * 0.85
+	playedText.y = display.contentHeight * 0.65
 	playedText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( playedText )
 	
@@ -118,6 +118,26 @@ function scene:createScene( event )
 		muteBtn2.isVisible = false
 	end
 	
+	local facebookText = display.newText( "Upload a screenshot of your highscore", display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	facebookText:setReferencePoint( display.TopLeftReferencePoint )
+	facebookText.x = display.contentWidth * 0.04
+	facebookText.y = display.contentHeight * 0.75
+	facebookText:setTextColor( 50, 150, 150 )
+	screenGroup:insert( facebookText )
+	
+	local facebookText2 = display.newText( "on our FB-group: Side-Scroller", display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	facebookText2:setReferencePoint( display.TopLeftReferencePoint )
+	facebookText2.x = display.contentWidth * 0.04
+	facebookText2.y = display.contentHeight * 0.81
+	facebookText2:setTextColor( 50, 150, 150 )
+	screenGroup:insert( facebookText2 )
+	
+	local scoreToBeat = display.newText( "Score To Beat: 184", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
+	scoreToBeat.x = display.contentWidth * 0.04
+	scoreToBeat.y = display.contentHeight * 0.88
+	scoreToBeat:setTextColor( 255, 0, 0 )
+	screenGroup:insert( scoreToBeat )
 end
 
 function saveTable(t, fileName)

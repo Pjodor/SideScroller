@@ -42,9 +42,6 @@ function scene:createScene( event )
 	local background = display.newImage( "bg.png" )
 	screenGroup:insert( background )
 	
-	local cityFix = display.newImage( "citybluefix.png" )
-	screenGroup:insert( cityFix )
-	
 	scrollImg1 = display.newImage( "scrollimg4.png" )
 	scrollImg1.x = 240
 	scrollImg1.speed = 3
@@ -54,9 +51,6 @@ function scene:createScene( event )
 	scrollImg3.x = 720
 	scrollImg3.speed = 3
 	screenGroup:insert( scrollImg3 )
-	
-	local cityFix2 = display.newImage( "citygrayfix.png" )
-	screenGroup:insert( cityFix2 )
 
 	scrollImg2 = display.newImage( "scrollimg3.png" )
 	scrollImg2.x = 240
@@ -116,6 +110,16 @@ function scene:createScene( event )
 	physics.addBody(enemy3, "static", { density = .1, friction = .2, bounce = .1, radius = 15 } )
 	screenGroup:insert( enemy3 )
 	
+	star = display.newImage( "star01.png" )
+	star.x = 600
+	star.y = math.random(50, 300)
+	star.speed = math.random( 5, 8 )
+	star.initY = star.y
+	star.amp = math.random( 20, 50 )
+	star.angle = math.random( 1, 360 )
+	star.isVisible = true
+	screenGroup:insert( star )
+	
 	topCollider = display.newRect( 0, -20, 480 ,5 )
 	physics.addBody( topCollider, "static", { density = .1, friction = .2, bounce = .1 } )
 	screenGroup:insert( topCollider )
@@ -157,7 +161,7 @@ function scene:createScene( event )
 	local scoreText = display.newText( "Score:", 20, 20, "Helvetica", 18 )
 	screenGroup:insert( scoreText )
 	
-	pointText = display.newText( "0", 80, 20, "Helvetica", 18 )
+	pointText = display.newText( "0", 85, 20, "Helvetica", 18 )
 	screenGroup:insert( pointText )
 	
 end
@@ -252,15 +256,15 @@ function moveCircle( self, event )
 	
 	if self.x < -20 then
 		if runTime < 15 then
-			self.x = 710
-			self.y = math.random( 100, 150 )
+			self.x = math.random(500,800)
+			self.initY = math.random( 50, 300 )
 			self.speed = math.random( 4, 6 )
 			self.amp = math.random( 20, 50 )
 			self.angle = math.random( 1, 360 )
 		
 		else if runTime >= 15 and runTime < 30 then
-			self.x = 710
-			self.y = math.random( 100, 150 )
+			self.x = math.random(500,800)
+			self.initY = math.random( 50, 250 )
 			self.speed = math.random( 5, 7 )
 			self.amp = math.random( 50, 100 )
 			self.angle = math.random( 1, 360 )
@@ -271,8 +275,8 @@ function moveCircle( self, event )
 			scrollImg4.speed = 6
 			
 		else if runTime >= 30 then
-			self.x = 710
-			self.y = math.random( 100, 150 )
+			self.x = math.random(500,800)
+			self.initY = math.random( 100, 200 )
 			self.speed = math.random( 6, 8 )
 			self.amp = math.random( 70, 100 )
 			self.angle = math.random( 1, 360 )
@@ -293,34 +297,17 @@ function moveCircle( self, event )
 	return true
 end
 
-function moveCircle2( self, event )
-	local runTime = os.time() - startTime
+function moveStar( self, event )
+	if self.x > -50 and self.x < -10 or self.x > 500 then
+		self.x = self.x - .5
 	
-	if self.x < -20 then
-		if runTime < 15 then
+	elseif self.x < -50 then
 			self.x = 710
-			self.y = math.random( 150, 300 )
-			self.speed = math.random( 4, 6 )
-			self.amp = math.random( 20, 50 )
-			self.angle = math.random( 1, 360 )
-		
-		else if runTime >= 15 and runTime < 30 then
-			self.x = 710
-			self.y = math.random( 150, 300 )
-			self.speed = math.random( 4, 7 )
-			self.amp = math.random( 50, 100 )
-			self.angle = math.random( 1, 360 )
-			
-		else if runTime >= 30 then
-			self.x = 710
-			self.y = math.random( 150, 300 )
+			self.initY = math.random( 50, 250 )
 			self.speed = math.random( 6, 8 )
-			self.amp = math.random( 70, 100 )
+			self.amp = math.random( 30, 50 )
 			self.angle = math.random( 1, 360 )
-			
-		end
-		end
-		end
+			self.isVisible = true
 	else
 		self.x = self.x - self.speed
 		self.angle = self.angle + 0.1
@@ -328,46 +315,26 @@ function moveCircle2( self, event )
 	end
 	return true
 end
-
-function moveCircle3( self, event )
-	local runTime = os.time() - startTime
-	
-	if self.x < -20 then
-		if runTime < 15 then
-			self.x = 710
-			self.y = math.random( 300, 350 )
-			self.speed = math.random( 4, 6 )
-			self.amp = math.random( 20, 50 )
-			self.angle = math.random( 1, 360 )
-		
-		else if runTime >= 15 and runTime < 30 then
-			self.x = 710
-			self.y = math.random( 300, 350 )
-			self.speed = math.random( 4, 7 )
-			self.amp = math.random( 50, 100 )
-			self.angle = math.random( 1, 360 )
-			
-		else if runTime >= 30 then
-			self.x = 710
-			self.y = math.random( 300, 350 )
-			self.speed = math.random( 6, 8 )
-			self.amp = math.random( 70, 100 )
-			self.angle = math.random( 1, 360 )
-			
-		end
-		end
-		end
-	else
-		self.x = self.x - self.speed
-		self.angle = self.angle + 0.1
-		self.y = self.amp * math.sin( self.angle ) + self.initY
-	end
-	return true
-end
-
 
 function gameOver()
    storyboard.gotoScene("restart", "fade", 400)
+end
+
+function starCollision()
+	starCheck = math.sqrt((star.x - arrow.x)^2 + (star.y - arrow.y)^2)
+	if arrow.collided == false then
+		if isDrifting == 0 then
+			if starCheck < 20 then
+					star.isVisible = false
+					makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
+					bonusTime = bonusTime + 15
+					isDrifting = 30				
+			end
+		else
+			isDrifting = isDrifting - 1
+		end
+	end
+	
 end
 
 function onCollision( event )
@@ -411,31 +378,26 @@ function closeFly()
 	local DisEnemy2 = math.sqrt((enemy2.x - arrow.x)^2+(enemy2.y - arrow.y)^2)
 	local DisEnemy3 = math.sqrt((enemy3.x - arrow.x)^2+(enemy3.y - arrow.y)^2)
 	
-	--print("Close")
 	if arrow.collided == false then
 		if isDrifting == 0 then
 		
-			if DisEnemy1 < 70 and DisEnemy2 < 70 then
+			if DisEnemy1 < 65 and DisEnemy2 < 65 then
 				bonusTime = bonusTime + 15
-				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
 				isDrifting = 30
-			
-			elseif DisEnemy1 < 70 and DisEnemy3 < 70 then
+				
+			elseif DisEnemy1 < 65 and DisEnemy3 < 65 then
 				bonusTime = bonusTime + 15
-				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
 				isDrifting = 30
 				
-			elseif DisEnemy2 < 70 and DisEnemy3 < 70 then
+			elseif DisEnemy2 < 65 and DisEnemy3 < 65 then
 				bonusTime = bonusTime + 15
-				--print("Close")
 				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
 				isDrifting = 30
 				
-			elseif DisEnemy1 < 45 or DisEnemy2 < 45 or DisEnemy3 < 45 then
+			elseif DisEnemy1 < 50 or DisEnemy2 < 50 or DisEnemy3 < 50 then
 				bonusTime = bonusTime + 5
-				--print("Close")
 				makeDriftingText( "+5", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
 				isDrifting = 30
 			end
@@ -518,11 +480,16 @@ function scene:enterScene( event )
 	enemy1.enterFrame = moveCircle
 	Runtime:addEventListener( "enterFrame", enemy1 )
 	
-	enemy2.enterFrame = moveCircle2
+	enemy2.enterFrame = moveCircle
 	Runtime:addEventListener( "enterFrame", enemy2 )
 	
-	enemy3.enterFrame = moveCircle3
+	enemy3.enterFrame = moveCircle
 	Runtime:addEventListener( "enterFrame", enemy3 )
+	
+	star.enterFrame = moveStar
+	Runtime:addEventListener( "enterFrame", star )
+	
+	Runtime:addEventListener( "enterFrame", starCollision )
 	
 	Runtime:addEventListener( "enterFrame", closeFly )
 	
@@ -536,6 +503,7 @@ function scene:enterScene( event )
 	
 	isDrifting = 0
 	
+		
 end
 
 function scene:exitScene( event )
@@ -551,6 +519,9 @@ function scene:exitScene( event )
 	Runtime:removeEventListener( "collision", onCollision )
 	Runtime:removeEventListener( "enterFrame", closeFly )
 	Runtime:removeEventListener( "enterFrame", checkMove )
+	Runtime:removeEventListener( "enterFrame", displayPointText )
+	Runtime:removeEventListener( "enterFrame", starCollision )
+	Runtime:removeEventListener( "enterFrame", moveStar )
 	
 	
 	
