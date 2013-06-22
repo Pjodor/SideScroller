@@ -15,6 +15,7 @@ local scene = storyboard.newScene()
 function scene:createScene( event )
 	
 	settings = loadTable("settings.json")
+	achive = loadTable("achive.json")
 	
 	if settings.mute == nil then
 		settings.mute = false
@@ -32,10 +33,27 @@ function scene:createScene( event )
 		settings.medelbonus = 0
 	end
 	
+	if settings.newHighScore == nil then
+		settings.newHighScore = false
+	end
+	
+	if settings.timesdead == nil then
+		settings.timesdead = 0
+	end
+	
+	if settings.hasDied == nil then
+		settings.hasDied = false
+	end
+	
+	if settings.stars == nil then
+		settings.stars = 0
+	end
+	
 	mute = settings.mute
 	bonusTime = 0
 	timeCheck = os.time()
 	pauseTime = false
+	starTaken = 0
 	
 	local screenGroup = self.view
 		
@@ -47,7 +65,7 @@ function scene:createScene( event )
 	scrollImg1.speed = 3
 	screenGroup:insert( scrollImg1 )
 
-	scrollImg3 = display.newImage( "scrollimg4.png" )
+	scrollImg3 = display.newImage( "scrollimg4-2.png" )
 	scrollImg3.x = 720
 	scrollImg3.speed = 3
 	screenGroup:insert( scrollImg3 )
@@ -57,12 +75,15 @@ function scene:createScene( event )
 	scrollImg2.speed = 5
 	screenGroup:insert( scrollImg2 )
 
-	scrollImg4 = display.newImage( "scrollimg3.png" )
+	scrollImg4 = display.newImage( "scrollimg3-2.png" )
 	scrollImg4.x = 720
 	scrollImg4.speed = 5
 	screenGroup:insert( scrollImg4 )
 	
-	arrow = display.newImage( "arrow01.png" )
+	--arrow = display.newImage( "arrow01.png" )
+	arrowSpriteScheet = sprite.newSpriteSheet( "arrowsprite03.png", 26, 18 )
+	arrowSprite = sprite.newSpriteSet( arrowSpriteScheet, 1, 3 )
+	arrow = sprite.newSprite( arrowSprite )
 	arrow.x = -80
 	arrow.y = 100
 	physics.addBody( arrow, "static", { density = 0.09, bounce = .1, friction = .2, radius = 12 } )
@@ -269,6 +290,12 @@ function moveCircle( self, event )
 			self.amp = math.random( 50, 100 )
 			self.angle = math.random( 1, 360 )
 			
+			scrollImg1:setFillColor( 200, 200, 200 )
+			scrollImg3:setFillColor( 200, 200, 200 )
+			
+			scrollImg2:setFillColor( 200, 200, 200 )
+			scrollImg4:setFillColor( 200, 200, 200 )
+			
 			scrollImg1.speed = 4
 			scrollImg3.speed = 4
 			scrollImg2.speed = 6
@@ -280,6 +307,12 @@ function moveCircle( self, event )
 			self.speed = math.random( 6, 8 )
 			self.amp = math.random( 70, 100 )
 			self.angle = math.random( 1, 360 )
+			
+			scrollImg1:setFillColor( 150, 150, 150 )
+			scrollImg3:setFillColor( 150, 150, 150 )
+			
+			scrollImg2:setFillColor( 150, 150, 150 )
+			scrollImg4:setFillColor( 150, 150, 150 )
 			
 			scrollImg1.speed = 5
 			scrollImg3.speed = 5
@@ -328,7 +361,8 @@ function starCollision()
 					star.isVisible = false
 					makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
 					bonusTime = bonusTime + 15
-					isDrifting = 30				
+					isDrifting = 30	
+					starTaken = starTaken + 1
 			end
 		else
 			isDrifting = isDrifting - 1
@@ -453,6 +487,19 @@ end
 
 function displayPointText()
 	pointText.text = (os.time() - startTime) + bonusTime
+	
+	local checkScore = (os.time() - startTime) + bonusTime
+	
+	if checkScore < 100 and checkScore >= 50 then
+	
+		arrow.currentFrame = 2
+		
+	elseif checkScore >= 100 then
+	
+		arrow.currentFrame = 3
+		
+	end
+	
 end
 
 function round(theNos, precision)
@@ -523,9 +570,6 @@ function scene:exitScene( event )
 	Runtime:removeEventListener( "enterFrame", starCollision )
 	Runtime:removeEventListener( "enterFrame", moveStar )
 	
-	
-	
-	
 	settings.mute = mute
 	settings.bonusTime = bonusTime
 	settings.pauseTime = pauseTime
@@ -536,6 +580,111 @@ function scene:exitScene( event )
 	
 	settings.medel = round( settings.medel, 2 )
 	settings.medelbonus = round( settings.medelbonus, 2 )
+	
+	if settings.score > settings.highscore then
+		settings.highscore = settings.score
+		settings.newHighScore = true
+	end
+	
+	timePlayed = os.time() - startTime
+	
+	if timePlayed < 20 and settings.hasDied == true then
+	
+		settings.timesdead = settings.timesdead + 1
+		
+	elseif timePlayed < 20 and settings.hasDied == false then
+	
+		settings.timesdead = settings.timesdead + 1
+		settings.hasDied = true
+		
+	else
+	
+		settings.hasDied = false
+		settings.timesdead = 0
+		
+	end
+	
+	if settings.score >= 50 then
+		achive.score50 = true
+	end
+	
+	if settings.score >= 100 then
+		achive.score100 = true
+	end
+	
+	if settings.score >= 150 then
+		achive.score150 = true
+	end
+	
+	if settings.score >= 200 then
+		achive.score200 = true
+	end
+	
+	if settings.bonusTime >= 50 then
+		achive.bonus50 = true
+	end
+	
+	if settings.bonusTime >= 100 then
+		achive.bonus100 = true
+	end
+	
+	if settings.bonusTime >= 150 then
+		achive.bonus150 = true
+	end
+	
+	if settings.runs >= 50 then
+		achive.played50 = true
+	end
+	
+	if settings.runs >= 100 then
+		achive.played100 = true
+	end
+	
+	if settings.runs >= 200 then
+		achive.played200 = true
+	end
+	
+	if starTaken >= 3 then
+		achive.star5 = true
+	end
+	
+	if starTaken >= 5 then
+		achive.star10 = true
+	end
+	
+	if starTaken >= 8 then
+		achive.star15 = true
+	end
+	
+	if timePlayed >= 30 then
+		achive.played30 = true
+	end
+	
+	if timePlayed >= 40 then
+		achive.played40 = true
+	end
+	
+	if timePlayed >= 50 then
+		achive.played50 = true
+	end
+	
+	if settings.timesdead >= 5 then
+		achive.dead5 = true
+	end
+	
+	if settings.timesdead >= 10 then
+		achive.dead10 = true
+	end
+	
+	if settings.timesdead >= 15 then
+		achive.dead15 = true
+	end
+	
+	if settings.stars < starTaken then
+		settings.stars = starTaken
+	end
+	
+	saveTable(achive, "achive.json")
 	saveTable(settings, "settings.json")
 	
 end

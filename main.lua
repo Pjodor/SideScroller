@@ -44,7 +44,35 @@ if loadTable("settings.json") == nil then
 	settings.medel = 0
 	settings.runs = 0
 	settings.medelbonus = 0
+	settings.timesdead = 0
 	saveTable( settings, "settings.json")
+end
+
+if loadTable( "achive.json") == nil then
+
+	local achive = {}
+	achive.score50 = false
+	achive.score100 = false
+	achive.score150 = false
+	achive.score200 = false
+	achive.dead5 = false
+	achive.dead10 = false
+	achive.dead15 = false
+	achive.time30 = false
+	achive.time40 = false
+	achive.time50 = false
+	achive.played50 = false
+	achive.played100 = false
+	achive.played200 = false
+	achive.star5 = false
+	achive.star10 = false
+	achive.star15 = false
+	achive.bonus50 = false
+	achive.bonus100 = false
+	achive.bonus150 = false
+	achive.allachive = false
+	
+	saveTable( achive, "achive.json" )
 end
 
 storyboard.gotoScene( "start" )

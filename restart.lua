@@ -22,15 +22,17 @@ function scene:createScene( event )
 	titel:setTextColor( 150, 150, 150 )
 	screenGroup:insert( titel )
 	
-	if settings.score > settings.highscore then
-		settings.highscore = settings.score
+	if settings.newHighScore == true then
 		
 		local newRecordTime = display.newText("New record!", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 		newRecordTime:setReferencePoint( display.TopLeftReferencePoint )
-		newRecordTime.x = display.contentWidth * 0.5
+		newRecordTime.x = display.contentWidth * 0.65
 		newRecordTime.y = display.contentHeight * 0.45
 		newRecordTime:setTextColor( 255, 0, 0 )
 		screenGroup:insert( newRecordTime )
+		
+		settings.newHighScore = false
+		
 	end
 	
 	local yourTime = display.newText("Your total score: " .. settings.score .. " points (".. bonusTime .. " bonus points)", display.contentWidth, display.contentHeight, native.systemFont, 20 )
@@ -40,7 +42,7 @@ function scene:createScene( event )
 	yourTime:setTextColor( 150, 150, 150 )
 	screenGroup:insert( yourTime )
 	
-	local yourRecordTime = display.newText("Best score: " .. settings.highscore .. " points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local yourRecordTime = display.newText("Your best score: " .. settings.highscore .. " points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourRecordTime.x = display.contentWidth * 0.05
 	yourRecordTime.y = display.contentHeight * 0.45
@@ -132,12 +134,27 @@ function scene:createScene( event )
 	facebookText2:setTextColor( 50, 150, 150 )
 	screenGroup:insert( facebookText2 )
 	
-	local scoreToBeat = display.newText( "Score To Beat: 184", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local scoreToBeat = display.newText( "Score to beat: 245 points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
 	scoreToBeat.x = display.contentWidth * 0.04
 	scoreToBeat.y = display.contentHeight * 0.88
 	scoreToBeat:setTextColor( 255, 0, 0 )
 	screenGroup:insert( scoreToBeat )
+	
+	achivementsBtn = widget.newButton{
+		label = "Achivements",
+		fontSize = 12,
+		labelColor = { default= {255, 255, 255, 255 },
+						over = { 255, 255, 255, 150 } },
+		overFile = "resetbtn.png",
+		defaultFile = "resetbtn.png",
+		onEvent = achivementsFunction,
+	}
+	achivementsBtn:setReferencePoint( display.TopRightReferencePoint )
+	achivementsBtn.x = display.contentWidth * 0.98
+	achivementsBtn.y = display.contentHeight * 0.65
+	screenGroup:insert( achivementsBtn )	
+	
 end
 
 function saveTable(t, fileName)
@@ -190,15 +207,49 @@ end
 function resetScore()
 	settings.highscore = 0
 	settings.medel = 0
-	settings.medelbonus = 0
+	settings.medelbons = 0
 	settings.runs = 0
-	saveTable( settings, "settings.json" )
+	settings.hasDied = false
+	settings.timesdead = 0
+	saveTable( settings, "settings.json")
+	
+	achive.score50 = false
+	achive.score100 = false
+	achive.score150 = false
+	achive.score200 = false
+	achive.dead5 = false
+	achive.dead10 = false
+	achive.dead15 = false
+	achive.time30 = false
+	achive.time40 = false
+	achive.time50 = false
+	achive.played50 = false
+	achive.played100 = false
+	achive.played200 = false
+	achive.star5 = false
+	achive.star10 = false
+	achive.star15 = false
+	achive.bonus50 = false
+	achive.bonus100 = false
+	achive.bonus150 = false
+	achive.allachive = false
+	
+	saveTable( achive, "achive.json" )
 end
 
 function start( event )
 	if event.phase == "began" then
 	
 		storyboard.gotoScene( "game", "fade", 400 )
+		
+	end
+end
+
+function achivementsFunction( event )
+
+	if event.phase == "began" then
+	
+		storyboard.gotoScene( "achievements", "fade", 400 )
 		
 	end
 end

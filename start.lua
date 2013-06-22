@@ -71,7 +71,7 @@ function scene:createScene( event )
 		muteBtn2.isVisible = false
 	end
 	
-	local scoreToBeat = display.newText("Score To Beat: 184", display.contentWidth, display.contentHeight, native.systemFont, 25 )
+	local scoreToBeat = display.newText("Score to beat: 245 points", display.contentWidth, display.contentHeight, native.systemFont, 25 )
 	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
 	scoreToBeat.x = display.contentWidth * 0.05
 	scoreToBeat.y = display.contentHeight * 0.84
@@ -135,8 +135,6 @@ function start( event )
 end
 
 function scene:enterScene( event )
-	
-
 	
 	background:addEventListener( "touch", start )
 	
