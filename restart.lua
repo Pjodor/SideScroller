@@ -134,12 +134,19 @@ function scene:createScene( event )
 	facebookText2:setTextColor( 50, 150, 150 )
 	screenGroup:insert( facebookText2 )
 	
-	local scoreToBeat = display.newText( "Score to beat: 245 points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local scoreToBeat = display.newText( "Score to beat: 308 points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
 	scoreToBeat.x = display.contentWidth * 0.04
 	scoreToBeat.y = display.contentHeight * 0.88
 	scoreToBeat:setTextColor( 255, 0, 0 )
 	screenGroup:insert( scoreToBeat )
+	
+	local highScoreName = display.newText( "(Jose, 2013-06-26)", display.contentWidth, display.contentHeight, native.systemFont, 12 )
+	highScoreName:setReferencePoint( display.TopLeftReferencePoint )
+	highScoreName.x = display.contentWidth * 0.53
+	highScoreName.y = display.contentHeight * 0.9
+	highScoreName:setTextColor( 255, 0, 0 )
+	screenGroup:insert( highScoreName )
 	
 	achivementsBtn = widget.newButton{
 		label = "Achivements",

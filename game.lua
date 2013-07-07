@@ -81,15 +81,39 @@ function scene:createScene( event )
 	screenGroup:insert( scrollImg4 )
 	
 	--arrow = display.newImage( "arrow01.png" )
-	arrowSpriteScheet = sprite.newSpriteSheet( "arrowsprite03.png", 26, 18 )
-	arrowSprite = sprite.newSpriteSet( arrowSpriteScheet, 1, 3 )
-	arrow = sprite.newSprite( arrowSprite )
-	arrow.x = -80
-	arrow.y = 100
-	physics.addBody( arrow, "static", { density = 0.09, bounce = .1, friction = .2, radius = 12 } )
-	screenGroup:insert( arrow )
-	arrowIntro = transition.to( arrow, {time = 1500, x=100, onComplete = arrowReady } )
-	arrow.collided = false
+	if achive.score100 == false then
+		arrowSpriteScheet = sprite.newSpriteSheet( "arrowsprite01.png", 26, 18 )
+		arrowSprite = sprite.newSpriteSet( arrowSpriteScheet, 1, 3 )
+		arrow = sprite.newSprite( arrowSprite )
+		arrow.x = -80
+		arrow.y = 100
+		physics.addBody( arrow, "static", { density = 0.09, bounce = .1, friction = .2, radius = 12 } )
+		screenGroup:insert( arrow )
+		arrowIntro = transition.to( arrow, {time = 1500, x=100, onComplete = arrowReady } )
+		arrow.collided = false
+	elseif achive.score100 == true and achive.score200 == false then
+		arrowSpriteScheet = sprite.newSpriteSheet( "arrowsprite02.png", 26, 18 )
+		arrowSprite = sprite.newSpriteSet( arrowSpriteScheet, 1, 3 )
+		arrow = sprite.newSprite( arrowSprite )
+		arrow.x = -80
+		arrow.y = 100
+		physics.addBody( arrow, "static", { density = 0.09, bounce = .1, friction = .2, radius = 12 } )
+		screenGroup:insert( arrow )
+		arrowIntro = transition.to( arrow, {time = 1500, x=100, onComplete = arrowReady } )
+		arrow.collided = false
+	elseif achive.score100 == true and achive.score200 == true then
+		arrowSpriteScheet = sprite.newSpriteSheet( "arrowsprite03.png", 26, 18 )
+		arrowSprite = sprite.newSpriteSet( arrowSpriteScheet, 1, 3 )
+		arrow = sprite.newSprite( arrowSprite )
+		arrow.x = -80
+		arrow.y = 100
+		physics.addBody( arrow, "static", { density = 0.09, bounce = .1, friction = .2, radius = 12 } )
+		screenGroup:insert( arrow )
+		arrowIntro = transition.to( arrow, {time = 1500, x=100, onComplete = arrowReady } )
+		arrow.collided = false
+	end
+
+
 	
 	explosionSpriteSheet = sprite.newSpriteSheet("explosion.png", 24, 23)
 	explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
@@ -332,7 +356,7 @@ end
 
 function moveStar( self, event )
 	if self.x > -50 and self.x < -10 or self.x > 500 then
-		self.x = self.x - .5
+		self.x = self.x - .75
 	
 	elseif self.x < -50 then
 			self.x = 710

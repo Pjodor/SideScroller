@@ -71,12 +71,19 @@ function scene:createScene( event )
 		muteBtn2.isVisible = false
 	end
 	
-	local scoreToBeat = display.newText("Score to beat: 245 points", display.contentWidth, display.contentHeight, native.systemFont, 25 )
+	local scoreToBeat = display.newText("Score to beat: 308 points", display.contentWidth, display.contentHeight, native.systemFont, 25 )
 	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
 	scoreToBeat.x = display.contentWidth * 0.05
 	scoreToBeat.y = display.contentHeight * 0.84
 	scoreToBeat:setTextColor( 255, 0, 0 )
 	screenGroup:insert( scoreToBeat )
+	
+	local highScoreName = display.newText( "(Jose, 2013-06-26)", display.contentWidth, display.contentHeight, native.systemFont, 12 )
+	highScoreName:setReferencePoint( display.TopLeftReferencePoint )
+	highScoreName.x = display.contentWidth * 0.65
+	highScoreName.y = display.contentHeight * 0.875
+	highScoreName:setTextColor( 255, 0, 0 )
+	screenGroup:insert( highScoreName )
 	
 end
 
