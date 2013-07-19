@@ -75,6 +75,49 @@ if loadTable( "achive.json") == nil then
 	saveTable( achive, "achive.json" )
 end
 
+local gameNetwork = require "gameNetwork"
+local playerName
+
+local function loadLocalPlayerCallback( event )
+   playerName = event.data.alias
+   saveTable( playerName, "playerName.json" )
+   --saveSettings()  --save player data locally using your own "saveSettings()" function
+end
+
+local function gameNetworkLoginCallback( event )
+   gameNetwork.request( "loadLocalPlayer", { listener=loadLocalPlayerCallback } )
+   return true
+end
+
+local function gpgsInitCallback( event )
+   gameNetwork.request( "login", { userInitiated=true, listener=gameNetworkLoginCallback } )
+end
+
+local function gameNetworkSetup()
+   if ( system.getInfo("platformName") == "Android" ) then
+      gameNetwork.init( "google", gpgsInitCallback )
+   else
+      gameNetwork.init( "gamecenter", gameNetworkLoginCallback )
+   end
+end
+
+------HANDLE SYSTEM EVENTS------
+local function systemEvents( event )
+   print("systemEvent " .. event.type)
+   if ( event.type == "applicationSuspend" ) then
+      print( "suspending..........................." )
+   elseif ( event.type == "applicationResume" ) then
+      print( "resuming............................." )
+   elseif ( event.type == "applicationExit" ) then
+      print( "exiting.............................." )
+   elseif ( event.type == "applicationStart" ) then
+      gameNetworkSetup()  --login to the network here
+   end
+   return true
+end
+
+Runtime:addEventListener( "system", systemEvents )
+
 storyboard.gotoScene( "start" )
 
 
