@@ -48,6 +48,26 @@ if loadTable("settings.json") == nil then
 	saveTable( settings, "settings.json")
 end
 
+if loadTable( "game2settings.json" ) == nil then
+	local game2settings = {}
+	game2settings.score = 0
+	game2settings.highscore = 0
+	game2settings.medel = 0
+	game2settings.runs = 0
+	game2settings.timesdead = 0
+	saveTable( game2settings, "game2settings.json")
+end
+
+if loadTable( "game3settings.json" ) == nil then
+	local game3settings = {}
+	game3settings.time = 0
+	game3settings.highscoretime = 0
+	game3settings.medeltime = 0
+	game3settings.runs = 0
+	game3settings.timesdead = 0
+	saveTable( game3settings, "game3settings.json")
+end
+
 if loadTable( "achive.json") == nil then
 
 	local achive = {}
@@ -58,9 +78,6 @@ if loadTable( "achive.json") == nil then
 	achive.dead5 = false
 	achive.dead10 = false
 	achive.dead15 = false
-	achive.time30 = false
-	achive.time40 = false
-	achive.time50 = false
 	achive.played50 = false
 	achive.played100 = false
 	achive.played200 = false
@@ -75,48 +92,46 @@ if loadTable( "achive.json") == nil then
 	saveTable( achive, "achive.json" )
 end
 
-local gameNetwork = require "gameNetwork"
-local playerName
+if loadTable( "achive2.json") == nil then
 
-local function loadLocalPlayerCallback( event )
-   playerName = event.data.alias
-   saveTable( playerName, "playerName.json" )
-   --saveSettings()  --save player data locally using your own "saveSettings()" function
+	local achive2 = {}
+	achive2.score50 = false
+	achive2.score100 = false
+	achive2.score150 = false
+	achive2.score200 = false
+	achive2.dead5 = false
+	achive2.dead10 = false
+	achive2.dead15 = false
+	achive2.played50 = false
+	achive2.played100 = false
+	achive2.played200 = false
+	achive2.star4 = false
+	achive2.star7 = false
+	achive2.star10 = false
+	achive2.allachive = false
+	
+	saveTable( achive2, "achive2.json" )
 end
 
-local function gameNetworkLoginCallback( event )
-   gameNetwork.request( "loadLocalPlayer", { listener=loadLocalPlayerCallback } )
-   return true
-end
+if loadTable( "achive3.json") == nil then
 
-local function gpgsInitCallback( event )
-   gameNetwork.request( "login", { userInitiated=true, listener=gameNetworkLoginCallback } )
+	local achive3 = {}
+	achive3.dead5 = false
+	achive3.dead10 = false
+	achive3.dead15 = false
+	achive3.time30 = false
+	achive3.time60 = false
+	achive3.time120 = false
+	achive3.played50 = false
+	achive3.played100 = false
+	achive3.played200 = false
+	achive3.star4 = false
+	achive3.star7 = false
+	achive3.star10 = false
+	achive3.allachive = false
+	
+	saveTable( achive3, "achive3.json" )
 end
-
-local function gameNetworkSetup()
-   if ( system.getInfo("platformName") == "Android" ) then
-      gameNetwork.init( "google", gpgsInitCallback )
-   else
-      gameNetwork.init( "gamecenter", gameNetworkLoginCallback )
-   end
-end
-
-------HANDLE SYSTEM EVENTS------
-local function systemEvents( event )
-   print("systemEvent " .. event.type)
-   if ( event.type == "applicationSuspend" ) then
-      print( "suspending..........................." )
-   elseif ( event.type == "applicationResume" ) then
-      print( "resuming............................." )
-   elseif ( event.type == "applicationExit" ) then
-      print( "exiting.............................." )
-   elseif ( event.type == "applicationStart" ) then
-      gameNetworkSetup()  --login to the network here
-   end
-   return true
-end
-
-Runtime:addEventListener( "system", systemEvents )
 
 storyboard.gotoScene( "start" )
 

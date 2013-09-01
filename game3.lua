@@ -12,35 +12,9 @@ local scene = storyboard.newScene()
 function scene:createScene( event )
 	
 	settings = loadTable("settings.json")
+	game3settings = loadTable( "game3settings.json")
 	achive = loadTable("achive.json")
-	
-	if settings.mute == nil then
-		settings.mute = false
-	end
-	
-	if settings.medel == nil then
-		settings.medel = 0
-	end
-	
-	if settings.runs == nil then
-		settings.runs = 0
-	end	
-	
-	if settings.medelbonus == nil then
-		settings.medelbonus = 0
-	end
-	
-	if settings.newHighScore == nil then
-		settings.newHighScore = false
-	end
-	
-	if settings.timesdead == nil then
-		settings.timesdead = 0
-	end
-	
-	if settings.stars == nil then
-		settings.stars = 0
-	end
+	achive3 = loadTable("achive3.json")
 	
 	mute = settings.mute
 	bonusTime = 0
@@ -55,22 +29,22 @@ function scene:createScene( event )
 	
 	scrollImg1 = display.newImage( "scrollimg4.png" )
 	scrollImg1.x = 240
-	scrollImg1.speed = 3
+	scrollImg1.speed = 4
 	screenGroup:insert( scrollImg1 )
 
 	scrollImg3 = display.newImage( "scrollimg4-2.png" )
 	scrollImg3.x = 720
-	scrollImg3.speed = 3
+	scrollImg3.speed = 4
 	screenGroup:insert( scrollImg3 )
 
 	scrollImg2 = display.newImage( "scrollimg3.png" )
 	scrollImg2.x = 240
-	scrollImg2.speed = 5
+	scrollImg2.speed = 6	
 	screenGroup:insert( scrollImg2 )
 
 	scrollImg4 = display.newImage( "scrollimg3-2.png" )
 	scrollImg4.x = 720
-	scrollImg4.speed = 5
+	scrollImg4.speed = 6
 	screenGroup:insert( scrollImg4 )
 	
 	if achive.score100 == false then
@@ -104,8 +78,6 @@ function scene:createScene( event )
 		arrowIntro = transition.to( arrow, {time = 1500, x=100, onComplete = arrowReady } )
 		arrow.collided = false
 	end
-
-
 	
 	explosionSpriteSheet = sprite.newSpriteSheet("explosion.png", 24, 23)
 	explosionSprites = sprite.newSpriteSet(explosionSpriteSheet, 1, 8)
@@ -195,10 +167,16 @@ function scene:createScene( event )
 		muteBtn2.isVisible = false
 	end
 	
-	local scoreText = display.newText( "Score:", 20, 20, "Helvetica", 18 )
+	local timeLeft = display.newText( "Time left:", 20, 20, "Helvetica", 16 )
+	screenGroup:insert( timeLeft )
+	
+	timeLeftText = display.newText( "15", 91, 20, "Helvetica", 16 )
+	screenGroup:insert( timeLeftText )
+	
+	local scoreText = display.newText( "Time played:", 120, 20, "Helvetica", 16 )
 	screenGroup:insert( scoreText )
 	
-	pointText = display.newText( "0", 85, 20, "Helvetica", 18 )
+	pointText = display.newText( "0", 220, 20, "Helvetica", 16 )
 	screenGroup:insert( pointText )
 	
 end
@@ -249,7 +227,6 @@ function loadTable(fileName)
     end
 end
 
-
 function activateArrow( self, event )
 
 	self:applyForce( 0, -1.5, self.x, self.y )
@@ -286,58 +263,16 @@ function scrollBackground( self, event )
 	end
 end
 
-
-
 function moveCircle( self, event )
 	local runTime = os.time() - startTime
 	
 	if self.x < -20 then
-		if runTime < 15 then
-			self.x = math.random(500,800)
-			self.initY = math.random( 50, 300 )
-			self.speed = math.random( 4, 6 )
-			self.amp = math.random( 20, 50 )
-			self.angle = math.random( 1, 360 )
-		
-		else if runTime >= 15 and runTime < 30 then
-			self.x = math.random(500,800)
-			self.initY = math.random( 50, 250 )
-			self.speed = math.random( 5, 7 )
-			self.amp = math.random( 50, 100 )
-			self.angle = math.random( 1, 360 )
-			
-			--scrollImg1:setFillColor( 200, 200, 200 )
-			--scrollImg3:setFillColor( 200, 200, 200 )
-			
-			--scrollImg2:setFillColor( 200, 200, 200 )
-			--scrollImg4:setFillColor( 200, 200, 200 )
-			
-			scrollImg1.speed = 4
-			scrollImg3.speed = 4
-			scrollImg2.speed = 6
-			scrollImg4.speed = 6
-			
-		else if runTime >= 30 then
-			self.x = math.random(500,800)
-			self.initY = math.random( 100, 200 )
-			self.speed = math.random( 6, 8 )
-			self.amp = math.random( 70, 100 )
-			self.angle = math.random( 1, 360 )
-			
-			--scrollImg1:setFillColor( 150, 150, 150 )
-			--scrollImg3:setFillColor( 150, 150, 150 )
-			
-			--scrollImg2:setFillColor( 150, 150, 150 )
-			--scrollImg4:setFillColor( 150, 150, 150 )
-			
-			scrollImg1.speed = 5
-			scrollImg3.speed = 5
-			scrollImg2.speed = 7
-			scrollImg4.speed = 7
-			
-		end
-		end
-		end
+		self.x = math.random(500,800)
+		self.initY = math.random( 50, 250 )
+		self.speed = math.random( 5, 7 )
+		self.amp = math.random( 50, 100 )
+		self.angle = math.random( 1, 360 )
+
 	else
 		self.x = self.x - self.speed
 		self.angle = self.angle + 0.1
@@ -348,7 +283,7 @@ end
 
 function moveStar( self, event )
 	if self.x > -50 and self.x < -10 or self.x > 500 then
-		self.x = self.x - .75
+		self.x = self.x - 5
 	
 	elseif self.x < -50 then
 			self.x = 710
@@ -366,17 +301,19 @@ function moveStar( self, event )
 end
 
 function gameOver()
-   storyboard.gotoScene("restart", "fade", 400)
+   storyboard.gotoScene("restart3", "fade", 400)
 end
 
 function starCollision()
+
 	starCheck = math.sqrt((star.x - arrow.x)^2 + (star.y - arrow.y)^2)
+	
 	if arrow.collided == false then
 		if isDriftingStar == 0 then
 			if starCheck < 20 then
 					star.isVisible = false
-					makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
-					bonusTime = bonusTime + 15
+					makeDriftingText( "+5s", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
+					startTimeCount = startTimeCount + 5
 					isDriftingStar = 30	
 					starTaken = starTaken + 1
 			end
@@ -390,8 +327,8 @@ end
 function onCollision( event )
 	
 	local enemyHitSound = audio.loadSound( "explode2.wav" )
-	settings.score = os.time() - startTime + bonusTime
-	pointText.text = os.time() - startTime + bonusTime
+	
+	game3settings.time = os.time() - startTime
 	
 	Runtime:removeEventListener( "enterFrame", displayPointText )
 	
@@ -412,7 +349,7 @@ function onCollision( event )
 end
 
 function explode()
-
+	
 	explosion.x = arrow.x
 	explosion.y = arrow.y
 	explosion.isVisible = true
@@ -420,43 +357,6 @@ function explode()
 	arrow.isVisible = false
 	timer.performWithDelay(1500, gameOver, 1)
 
-end
-
-function closeFly()
-	
-	local DisEnemy1 = math.sqrt((enemy1.x - arrow.x)^2+(enemy1.y - arrow.y)^2)
-	local DisEnemy2 = math.sqrt((enemy2.x - arrow.x)^2+(enemy2.y - arrow.y)^2)
-	local DisEnemy3 = math.sqrt((enemy3.x - arrow.x)^2+(enemy3.y - arrow.y)^2)
-	
-	if arrow.collided == false then
-		if isDrifting == 0 then
-		
-			if DisEnemy1 < 65 and DisEnemy2 < 65 then
-				bonusTime = bonusTime + 15
-				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
-				isDrifting = 30
-				
-			elseif DisEnemy1 < 65 and DisEnemy3 < 65 then
-				bonusTime = bonusTime + 15
-				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
-				isDrifting = 30
-				
-			elseif DisEnemy2 < 65 and DisEnemy3 < 65 then
-				bonusTime = bonusTime + 15
-				makeDriftingText( "+15", {y=arrow.y, x=arrow.x, t=1000, yVal=-50} )
-				isDrifting = 30
-				
-			elseif DisEnemy1 < 50 or DisEnemy2 < 50 or DisEnemy3 < 50 then
-				bonusTime = bonusTime + 5
-				makeDriftingText( "+5", {y=arrow.y, x=arrow.x, t=2000, yVal=-50} )
-				isDrifting = 30
-			end
-		
-			else
-				isDrifting = isDrifting - 1
-			end
-	end
-	
 end
 
 function makeDriftingText(txt, opts)
@@ -468,11 +368,18 @@ function makeDriftingText(txt, opts)
     local x = opts.x or display.contentCenterX
     local y = opts.y or display.contentCenterY
     local fontFace = "Helvetica"
-    local fontSize = 15
+    local fontSize = opts.fontSize or 15
+	local fontColor = opts.fontColor or 0
 	
 		local dTxt = display.newText( txt, 0, 0, fontFace, fontSize )
 		dTxt.x = x
 		dTxt.y = y
+		
+		if fontColor == 0 then
+			dTxt:setTextColor( 255, 255, 255 )
+		elseif fontColor == 1 then
+			dTxt:setTextColor( 255, 0, 0 )
+		end
 		
 		if opts.grp then
 			opts.grp:insert(dTxt)
@@ -502,9 +409,9 @@ function checkMove()
 end
 
 function displayPointText()
-	pointText.text = (os.time() - startTime) + bonusTime
+	pointText.text = os.time() - startTime
 	
-	local checkScore = (os.time() - startTime) + bonusTime
+	local checkScore = os.time() - startTime
 	
 	if checkScore < 100 and checkScore >= 50 then
 	
@@ -518,13 +425,73 @@ function displayPointText()
 	
 end
 
+
+function displayTimeLeft()
+
+	local timeLeftCheck = startTimeCount - (os.time() - startTime)
+	
+	if timeLeftCheck > -1 then
+	
+		timeLeftText.text = startTimeCount - (os.time() - startTime)
+	
+	end
+	
+	if isDriftingTime == 0 then
+	
+		if timeLeftCheck == 0 and arrow.collided == false then
+			
+			arrow.collided = true
+			arrow.bodyType = "static"
+			explode()
+			
+			makeDriftingText( "Time is up!", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+			isDriftingTime = 31
+			
+			game3settings.time = os.time() - startTime
+			
+		elseif timeLeftCheck == 1 and arrow.collided == false then
+			
+				makeDriftingText( "1", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+				isDriftingTime = 32
+			
+		elseif timeLeftCheck == 2 and arrow.collided == false then
+		
+				makeDriftingText( "2", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+				isDriftingTime = 32
+			
+		elseif timeLeftCheck == 3 and arrow.collided == false then
+			
+				makeDriftingText( "3", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+				isDriftingTime = 32
+			
+		elseif timeLeftCheck == 4 and arrow.collided == false then
+			
+				makeDriftingText( "4", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+				isDriftingTime = 32
+		
+		elseif timeLeftCheck == 5 and arrow.collided == false then
+		
+				makeDriftingText( "5", {t=1000, yVal=-50, fontSize=55, fontColor = 1 } )
+				isDriftingTime = 32
+		end
+	
+	else
+	
+		isDriftingTime = isDriftingTime - 1
+		
+	end
+	
+end
+
 function round(theNos, precision)
 	return math.floor(theNos*math.pow(10,precision)+0.5) / math.pow(10,precision)
 end
 
 function scene:enterScene( event )
 	
-	storyboard.removeScene("game2")
+	storyboard.removeScene("game")
+	storyboard.removeScene("restart2")
+	
 	
 	Runtime:addEventListener( "touch", touchScreen )
 	
@@ -554,17 +521,19 @@ function scene:enterScene( event )
 	
 	Runtime:addEventListener( "enterFrame", starCollision )
 	
-	Runtime:addEventListener( "enterFrame", closeFly )
-	
 	Runtime:addEventListener( "enterFrame", checkMove )
 	
 	Runtime:addEventListener( "collision", onCollision )
 	
 	Runtime:addEventListener( "enterFrame", displayPointText )
 	
+	Runtime:addEventListener( "enterFrame", displayTimeLeft )
+	
 	startTime = os.time()
+	startTimeCount = 15
 	
 	isDrifting = 0
+	isDriftingTime = 0
 	isDriftingStar = 0
 	
 end
@@ -580,107 +549,86 @@ function scene:exitScene( event )
 	Runtime:removeEventListener( "enterFrame", enemy2 )
 	Runtime:removeEventListener( "enterFrame", enemy3 )
 	Runtime:removeEventListener( "collision", onCollision )
-	Runtime:removeEventListener( "enterFrame", closeFly )
 	Runtime:removeEventListener( "enterFrame", checkMove )
 	Runtime:removeEventListener( "enterFrame", displayPointText )
 	Runtime:removeEventListener( "enterFrame", starCollision )
 	Runtime:removeEventListener( "enterFrame", moveStar )
+	Runtime:removeEventListener( "enterFrame", displayTimeLeft )
 	
 	settings.mute = mute
-	settings.bonusTime = bonusTime
-	settings.pauseTime = pauseTime
 	
-	settings.runs = settings.runs + 1
-	settings.medel = (settings.medel * (settings.runs - 1) + settings.score)/settings.runs
-	settings.medelbonus = (settings.medelbonus * (settings.runs - 1) + settings.bonusTime)/settings.runs
+	game3settings.pauseTime = pauseTime
+	game3settings.runs = game3settings.runs + 1
+	game3settings.medeltime = (game3settings.medeltime * (game3settings.runs - 1) + game3settings.time)/game3settings.runs
 	
-	settings.medel = round( settings.medel, 2 )
-	settings.medelbonus = round( settings.medelbonus, 2 )
+	game3settings.medeltime = round( game3settings.medeltime, 2 )
 	
-	if settings.score > settings.highscore then
-		settings.highscore = settings.score
-		settings.newHighScore = true
+	if game3settings.time > game3settings.highscoretime then
+		game3settings.highscoretime = game3settings.time
+		game3settings.newHighScore = true
 	end
 	
 	timePlayed = os.time() - startTime
 	
 	if timePlayed < 15 then
 	
-		settings.timesdead = settings.timesdead + 1
+		game3settings.timesdead = game3settings.timesdead + 1
 		
 	end
 	
-	if settings.score >= 50 then
-		achive.score50 = true
+	
+	if game3settings.time >= 30 then
+		achive3.time30 = true
 	end
 	
-	if settings.score >= 100 then
-		achive.score100 = true
+	if game3settings.time >= 60 then
+		achive3.time60 = true
 	end
 	
-	if settings.score >= 150 then
-		achive.score150 = true
+	if game3settings.time >= 120 then
+		achive3.time120 = true
 	end
 	
-	if settings.score >= 200 then
-		achive.score200 = true
+	if game3settings.runs >= 50 then
+		achive3.played50 = true
 	end
 	
-	if settings.bonusTime >= 50 then
-		achive.bonus50 = true
+	if game3settings.runs >= 100 then
+		achive3.played100 = true
 	end
 	
-	if settings.bonusTime >= 100 then
-		achive.bonus100 = true
+	if game3settings.runs >= 200 then
+		achive3.played200 = true
 	end
 	
-	if settings.bonusTime >= 150 then
-		achive.bonus150 = true
+	if starTaken >= 4 then
+		achive3.star4 = true
 	end
 	
-	if settings.runs >= 50 then
-		achive.played50 = true
+	if starTaken >= 7 then
+		achive3.star7 = true
 	end
 	
-	if settings.runs >= 100 then
-		achive.played100 = true
+	if starTaken >= 10 then
+		achive3.star10 = true
 	end
 	
-	if settings.runs >= 200 then
-		achive.played200 = true
+	if game3settings.timesdead >= 5 then
+		achive3.dead5 = true
 	end
 	
-	if starTaken >= 3 then
-		achive.star5 = true
+	if game3settings.timesdead >= 10 then
+		achive3.dead10 = true
 	end
 	
-	if starTaken >= 5 then
-		achive.star10 = true
+	if game3settings.timesdead >= 15 then
+		achive3.dead15 = true
 	end
 	
-	if starTaken >= 8 then
-		achive.star15 = true
-	end
-	
-	if settings.timesdead >= 5 then
-		achive.dead5 = true
-	end
-	
-	if settings.timesdead >= 10 then
-		achive.dead10 = true
-	end
-	
-	if settings.timesdead >= 15 then
-		achive.dead15 = true
-	end
-	
-	if settings.stars < starTaken then
-		settings.stars = starTaken
-	end
-	
-	saveTable(achive, "achive.json")
+	saveTable(achive3, "achive3.json")
 	saveTable(settings, "settings.json")
-
+	saveTable(game3settings, "game3settings.json")
+	
 end
 
 function scene:destroyScene( event )

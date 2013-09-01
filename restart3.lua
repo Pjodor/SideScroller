@@ -6,23 +6,24 @@ local widget = require "widget"
 
 function scene:createScene( event )
 	
-	settings = loadTable("settings.json")
+	settings = loadTable( "settings.json")
+	game3settings = loadTable("game3settings.json")
 	mute = settings.mute
-	bonusTime = settings.bonusTime
+	bonusTime = game3settings.bonusTime
 	
 	local screenGroup = self.view
 	
 	background = display.newImage( "bg.png" )
 	screenGroup:insert( background )
 	
-	local titel = display.newText( "Classic", display.contentWidth, display.contentHeight, native.systemFont, 45 )
+	local titel = display.newText( "Survival", display.contentWidth, display.contentHeight, native.systemFont, 45 )
 	titel:setReferencePoint( display.TopLeftReferencePoint )
 	titel.x = display.contentWidth * 0.04
 	titel.y = display.contentHeight * 0.03
 	titel:setTextColor( 150, 150, 150 )
 	screenGroup:insert( titel )
 	
-	if settings.newHighScore == true then
+	if game3settings.newHighScore == true then
 		
 		local newRecordTime = display.newText("New record!", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 		newRecordTime:setReferencePoint( display.TopLeftReferencePoint )
@@ -31,49 +32,42 @@ function scene:createScene( event )
 		newRecordTime:setTextColor( 255, 0, 0 )
 		screenGroup:insert( newRecordTime )
 		
-		settings.newHighScore = false
+		game3settings.newHighScore = false
 		
 	end
 	
-	local yourTime = display.newText("Your score: " .. settings.score .. " points (".. bonusTime .. " bonus points)", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local yourTime = display.newText("Your time: " .. game3settings.time .. " seconds", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourTime:setReferencePoint( display.TopLeftReferencePoint )
 	yourTime.x = display.contentWidth * 0.04
 	yourTime.y = display.contentHeight * 0.35
 	yourTime:setTextColor( 150, 150, 150 )
 	screenGroup:insert( yourTime )
 	
-	local yourRecordTime = display.newText("Your best score: " .. settings.highscore .. " points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local yourRecordTime = display.newText("Your best time: " .. game3settings.highscoretime .. " seconds", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
-	yourRecordTime.x = display.contentWidth * 0.05
+	yourRecordTime.x = display.contentWidth * 0.04
 	yourRecordTime.y = display.contentHeight * 0.45
 	yourRecordTime:setTextColor( 50, 150, 150 )
 	screenGroup:insert( yourRecordTime )
 	
 	local restartText = display.newText( "Tap on the screen to restart", display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	restartText:setReferencePoint( display.TopLeftReferencePoint )
-	restartText.x = display.contentWidth * 0.06
+	restartText.x = display.contentWidth * 0.04
 	restartText.y = display.contentHeight * 0.23
 	restartText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( restartText )
 	
-	local medelText = display.newText( "Average score: " .. settings.medel, display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	local medelText = display.newText( "Average time: " .. game3settings.medeltime, display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	medelText:setReferencePoint( display.TopLeftReferencePoint )
 	medelText.x = display.contentWidth * 0.06
 	medelText.y = display.contentHeight * 0.55
 	medelText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( medelText )
 	
-	local medelBonusText = display.newText( "Average bonus: " .. settings.medelbonus, display.contentWidth, display.contentHeight, native.systemFont, 15 )
-	medelBonusText:setReferencePoint( display.TopLeftReferencePoint )
-	medelBonusText.x = display.contentWidth * 0.06
-	medelBonusText.y = display.contentHeight * 0.6
-	medelBonusText:setTextColor( 150, 150, 150 )
-	screenGroup:insert( medelBonusText )
-	
-	local playedText = display.newText( "You have played " .. settings.runs .. " times", display.contentWidth, display.contentHeight, native.systemFont, 15 )
+	local playedText = display.newText( "You have played " .. game3settings.runs .. " times", display.contentWidth, display.contentHeight, native.systemFont, 15 )
 	playedText:setReferencePoint( display.TopLeftReferencePoint )
 	playedText.x = display.contentWidth * 0.06
-	playedText.y = display.contentHeight * 0.65
+	playedText.y = display.contentHeight * 0.61
 	playedText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( playedText )
 	
@@ -121,14 +115,14 @@ function scene:createScene( event )
 	facebookText2:setTextColor( 50, 150, 150 )
 	screenGroup:insert( facebookText2 )
 	
-	local scoreToBeat = display.newText( "Score to beat: 308 points", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	local scoreToBeat = display.newText( "Time to beat: 35 seconds", display.contentWidth, display.contentHeight, native.systemFont, 20 )
 	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
 	scoreToBeat.x = display.contentWidth * 0.04
 	scoreToBeat.y = display.contentHeight * 0.88
 	scoreToBeat:setTextColor( 255, 0, 0 )
 	screenGroup:insert( scoreToBeat )
 	
-	local highScoreName = display.newText( "(Jose, 2013-06-26)", display.contentWidth, display.contentHeight, native.systemFont, 12 )
+	local highScoreName = display.newText( "(Patrik, 2013-07-18)", display.contentWidth, display.contentHeight, native.systemFont, 12 )
 	highScoreName:setReferencePoint( display.TopLeftReferencePoint )
 	highScoreName.x = display.contentWidth * 0.53
 	highScoreName.y = display.contentHeight * 0.9
@@ -210,13 +204,15 @@ function achivementsFunction( event )
 
 	if event.phase == "ended" then
 	
-		storyboard.gotoScene( "achievements", "fade", 400 )
+		storyboard.gotoScene( "achievements3", "fade", 400 )
 		
 	end
 end
 
 function scene:enterScene( event )
 	
+	storyboard.purgeScene("game3")
+	storyboard.purgeScene("game2")
 	background:addEventListener( "touch", start )
 		
 end
@@ -226,7 +222,8 @@ function scene:exitScene( event )
 	background:removeEventListener( "touch", start )
 	settings.mute = mute
 	saveTable(settings, "settings.json")
-	
+	saveTable(game3settings, "game3settings.json")
+
 end
 
 function scene:destroyScene( event )

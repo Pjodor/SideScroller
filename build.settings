@@ -33,21 +33,6 @@ settings = {
 	--[[
 	-- Android permissions
 
-	android = 
-	{
-		googlePlayGamesAppId = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnhpE4srfel49+c8SMU4ykgFapcVv9gdT78vmiZHcQWomKTuhTjU5aGgxURrMcxmdRpL1HyugcSpvqJoxLsBacFl9N1TUlGifM0n+21mc9iR/mJ+upX80vm1MMk0N/VocV1HtOpkju6zOwrrV6k4dXAEc5/lewFnf/NbcFTcC0e16EHicBCiNTgdKEF9o1kpZSsDcCrj8nscwqFcs4oWTMkRqj/ra/kOOOcEDJoDN0umM40hkU0+ApwFTkTTKap8rkIGJVRjwn91IcMnyWEMguDT5AQV2lMPtIyeK0VP3Lcf0nCMPstHPJInrYMpxxNsPaOPM2WQUHRHupPobZoeDzwIDAQAB"  --long App ID number (use yours!)
-	},
-
-	plugins =
-	{	
-		--key is the name passed to the Lua "require()"
-		["CoronaProvider.gameNetwork.google"] =
-	{
-		--required!
-		publisherId = "com.coronalabs",
-	},
-},
-	
 	androidPermissions = {
   		"android.permission.INTERNET",
   	},

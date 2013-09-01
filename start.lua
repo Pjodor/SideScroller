@@ -7,7 +7,7 @@ local json = require "json"
 function scene:createScene( event )
 	
 	settings = loadTable("settings.json")
-	local timeRecord = settings.highscore
+	
 	mute = settings.mute
 	
 	if mute == true then
@@ -16,29 +16,33 @@ function scene:createScene( event )
 	
 	local screenGroup = self.view
 	
-	background = display.newImage( "bg.png" )
+	local background = display.newImage( "bg.png" )
 	screenGroup:insert( background )
 	
+	local scrollImg1 = display.newImage( "scrollimg4.png" )
+	scrollImg1.x = 240
+	scrollImg1.speed = 3
+	screenGroup:insert( scrollImg1 )
+	
+	local scrollImg2 = display.newImage( "scrollimg3.png" )
+	scrollImg2.x = 240
+	scrollImg2.speed = 5
+	screenGroup:insert( scrollImg2 )
+	
 	local titel = display.newText( "Side-Scroller", display.contentWidth, display.contentHeight, native.systemFont, 50 )
-	titel:setReferencePoint( display.TopLeftReferencePoint )
-	titel.x = display.contentWidth * 0.04
-	titel.y = display.contentHeight * 0.03
+	titel:setReferencePoint( display.CenterReferencePoint )
+	titel.x = display.contentWidth * 0.5
+	titel.y = display.contentHeight * 0.15
 	titel:setTextColor( 150, 150, 150 )
 	screenGroup:insert( titel )
 	
-	local startText = display.newText( "Tap on the screen to start", display.contentWidth, display.contentHeight, native.systemFont, 20 )
-	startText:setReferencePoint( display.TopLeftReferencePoint )
-	startText.x = display.contentWidth * 0.1
-	startText.y = display.contentHeight * 0.25
+	
+	local startText = display.newText( "Pick a game mode to play", display.contentWidth, display.contentHeight, native.systemFont, 20 )
+	startText:setReferencePoint( display.CenterReferencePoint )
+	startText.x = display.contentWidth * 0.5
+	startText.y = display.contentHeight * 0.3
 	startText:setTextColor( 150, 150, 150 )
 	screenGroup:insert( startText )
-	
-	local yourRecordTime = display.newText("Your best score: " .. timeRecord .. " points", display.contentWidth, display.contentHeight, native.systemFont, 30 )
-	yourRecordTime:setReferencePoint( display.TopLeftReferencePoint )
-	yourRecordTime.x = display.contentWidth * 0.05
-	yourRecordTime.y = display.contentHeight * 0.7
-	yourRecordTime:setTextColor( 50, 150, 150 )
-	screenGroup:insert( yourRecordTime )
 	
 	
 	muteBtn = widget.newButton{
@@ -71,19 +75,47 @@ function scene:createScene( event )
 		muteBtn2.isVisible = false
 	end
 	
-	local scoreToBeat = display.newText("Score to beat: 308 points", display.contentWidth, display.contentHeight, native.systemFont, 25 )
-	scoreToBeat:setReferencePoint( display.TopLeftReferencePoint )
-	scoreToBeat.x = display.contentWidth * 0.05
-	scoreToBeat.y = display.contentHeight * 0.84
-	scoreToBeat:setTextColor( 255, 0, 0 )
-	screenGroup:insert( scoreToBeat )
+	gameOneBtn = widget.newButton{
+		label = "Classic",
+		fontSize = 17,
+		labelColor = { default= {255, 255, 255, 255 },
+					over = { 255, 255, 255, 150 } },
+		overFile = "menubtnpressed.png",
+		defaultFile = "menubtn.png",
+		onEvent = gameOne,
+	}
+	gameOneBtn:setReferencePoint( display.TopRightReferencePoint )
+	gameOneBtn.x = display.contentWidth * 0.35
+	gameOneBtn.y = display.contentHeight * 0.5
+	screenGroup:insert( gameOneBtn )
 	
-	local highScoreName = display.newText( "(Jose, 2013-06-26)", display.contentWidth, display.contentHeight, native.systemFont, 12 )
-	highScoreName:setReferencePoint( display.TopLeftReferencePoint )
-	highScoreName.x = display.contentWidth * 0.65
-	highScoreName.y = display.contentHeight * 0.875
-	highScoreName:setTextColor( 255, 0, 0 )
-	screenGroup:insert( highScoreName )
+	gameTwoBtn = widget.newButton{
+		label = "Time Attack",
+		fontSize = 17,
+		labelColor = { default= {255, 255, 255, 255 },
+						over = { 255, 255, 255, 150 } },
+		overFile = "menubtnpressed.png",
+		defaultFile = "menubtn.png",
+		onEvent = gameTwo,
+	}
+	gameTwoBtn:setReferencePoint( display.TopRightReferencePoint )
+	gameTwoBtn.x = display.contentWidth * 0.6
+	gameTwoBtn.y = display.contentHeight * 0.5
+	screenGroup:insert( gameTwoBtn )
+	
+	gameThreeBtn = widget.newButton{
+		label = "Survival",
+		fontSize = 17,
+		labelColor = { default= {255, 255, 255, 255 },
+						over = { 255, 255, 255, 150 } },
+		overFile = "menubtnpressed.png",
+		defaultFile = "menubtn.png",
+		onEvent = gameThree,
+	}
+	gameThreeBtn:setReferencePoint( display.TopRightReferencePoint )
+	gameThreeBtn.x = display.contentWidth * 0.85
+	gameThreeBtn.y = display.contentHeight * 0.5
+	screenGroup:insert( gameThreeBtn )
 	
 end
 
@@ -133,29 +165,56 @@ function sound ( event )
 	end
 end
 
-function start( event )
-	if event.phase == "began" then
+function gameOne( event )
 	
-		storyboard.gotoScene( "game", "fade", 400 )
-		
+	if event.phase == "ended" then
+		storyboard.gotoScene( "startgame1", "fade", 400 )
 	end
+	
 end
+
+function gameTwo( event )
+	
+	if event.phase == "ended" then
+		storyboard.gotoScene( "startgame2", "fade", 400 )
+	end
+	
+end
+
+function gameThree( event )
+
+		if event.phase == "ended" then
+			storyboard.gotoScene( "startgame3", "fade", 400 )
+		end
+	
+end
+
 
 function scene:enterScene( event )
 	
-	background:addEventListener( "touch", start )
+	storyboard.removeScene("restart")
+	storyboard.removeScene("restart2")
+	storyboard.removeScene("restart3")
+	storyboard.removeScene("achievements")
+	storyboard.removeScene("achievements2")
+	storyboard.removeScene("achievements3")
+	storyboard.removeScene("game")
+	storyboard.removeScene("game2")
+	storyboard.removeScene("game3")
+	storyboard.removeScene("startgame1")
+	storyboard.removeScene("startgame2")
+	storyboard.removeScene("startgame3")
 	
 end
 
 function scene:exitScene( event )
 
-	background:removeEventListener( "touch", start )
 	settings.mute = mute
 	saveTable(settings,"settings.json")
+
 end
 
 function scene:destroyScene( event )
-
 
 end
 
